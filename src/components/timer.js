@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import cn from "classnames";
+import Modal from "./modal";
+import FormattedTime from "./formattedTime";
 export default function Timer({}) {
   const [isCounting, setIsCounting] = useState(false);
+  const [lastTime, setLastTime] = useState(null)
+  const [isSaveModalOpen,setSaveModalOpen] = useState(false)
   const [timeElapsed, setElapsedTime] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
 
@@ -9,6 +13,7 @@ export default function Timer({}) {
 
   const startTimer = () => {
     setIsCounting(true);
+    setElapsedTime(0);
     setIntervalId(
       setInterval(() => {
         setElapsedTime((elapsed) => elapsed + 1);
@@ -17,6 +22,8 @@ export default function Timer({}) {
   };
   const stopTimer = () => {
     setIsCounting(false);
+    setLastTime(timeElapsed)
+    setSaveModalOpen(true);
     clearInterval(intervalId);
   };
 
@@ -27,23 +34,7 @@ export default function Timer({}) {
           Press space or click anywhere to stop!
         </h1>
         <div className="text-9xl">
-          <span>
-            {timeElapsed / 100 / 60 >= 1
-              ? Math.floor(timeElapsed / 100 / 60)
-              : "00"}
-          </span>
-          <span>.</span>
-          <span>
-            {timeElapsed / 100 >= 1
-              ? Math.floor(timeElapsed / 100) >= 10
-                ? Math.floor(timeElapsed / 100)
-                : "0" + Math.floor(timeElapsed / 100)
-              : "00"}
-          </span>
-          <span>:</span>
-          <span>
-            {timeElapsed === 0 ? "00" : timeElapsed.toString().slice(-2)}
-          </span>
+          <FormattedTime time={timeElapsed} />
         </div>
         <div>{isCounting}</div>
         <div>
@@ -68,6 +59,7 @@ export default function Timer({}) {
           stopTimer();
         }}
       />
+      <Modal isModalOpen={isSaveModalOpen} lastTime={lastTime}/>
     </>
   );
 }
