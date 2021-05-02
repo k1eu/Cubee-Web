@@ -59,7 +59,7 @@ export default function Timer({}) {
           stopTimer();
         }}
       />
-      <Modal isModalOpen={isSaveModalOpen} lastTime={lastTime}/>
+      <Modal isModalOpen={isSaveModalOpen} setModalOpen={setSaveModalOpen} lastTime={lastTime}/>
     </>
   );
 }
