@@ -5,18 +5,7 @@ export default function Timer({}) {
   const [timeElapsed, setElapsedTime] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
 
-  function handleSpacebar(event) {
-    if (event.code === "Space") {
-      event.preventDefault();
-      isCounting ? stopTimer() : startTimer();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleSpacebar);
-    
-
-  },[]);
+  // TODO: ADD SPACEBAR ACTIVATION AND STOP
 
   const startTimer = () => {
     setIsCounting(true);
@@ -31,44 +20,45 @@ export default function Timer({}) {
     clearInterval(intervalId);
   };
 
-
   return (
     <>
-      <h1 className={cn(isCounting ? "block" : "hidden")}>
-        Press space or click anywhere to stop!
-      </h1>
-      <div className="text-9xl">
-        <span>
-          {timeElapsed / 100 / 60 >= 1
-            ? Math.floor(timeElapsed / 100 / 60)
-            : "00"}
-        </span>
-        <span>.</span>
-        <span>
-          {timeElapsed / 100 >= 1
-            ? Math.floor(timeElapsed / 100) >= 10
-              ? Math.floor(timeElapsed / 100)
-              : "0" + Math.floor(timeElapsed / 100)
-            : "00"}
-        </span>
-        <span>:</span>
-        <span>
-          {timeElapsed === 0 ? "00" : timeElapsed.toString().slice(-2)}
-        </span>
+      <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
+        <h1 className={cn(isCounting ? "block" : "hidden")}>
+          Press space or click anywhere to stop!
+        </h1>
+        <div className="text-9xl">
+          <span>
+            {timeElapsed / 100 / 60 >= 1
+              ? Math.floor(timeElapsed / 100 / 60)
+              : "00"}
+          </span>
+          <span>.</span>
+          <span>
+            {timeElapsed / 100 >= 1
+              ? Math.floor(timeElapsed / 100) >= 10
+                ? Math.floor(timeElapsed / 100)
+                : "0" + Math.floor(timeElapsed / 100)
+              : "00"}
+          </span>
+          <span>:</span>
+          <span>
+            {timeElapsed === 0 ? "00" : timeElapsed.toString().slice(-2)}
+          </span>
+        </div>
+        <div>{isCounting}</div>
+        <div>
+          <button
+            className="py-4 bg-gray-200 w-32 rounded-lg"
+            onClick={() => {
+              startTimer();
+            }}
+            disabled={isCounting}
+          >
+            Start time
+          </button>
+        </div>
+        <div></div>
       </div>
-      <div>{isCounting}</div>
-      <div>
-        <button
-          className="py-4 bg-gray-200 w-32 rounded-lg"
-          onClick={() => {
-            startTimer();
-          }}
-          disabled={isCounting}
-        >
-          Start time 
-        </button>
-      </div>
-      <div></div>
       <div
         className={cn(
           "w-full h-full bg-black bg-opacity-50 absolute top-0 left-0 z-50 transition-all",
@@ -77,7 +67,7 @@ export default function Timer({}) {
         onClick={() => {
           stopTimer();
         }}
-      ></div>
+      />
     </>
   );
 }
